@@ -13,71 +13,30 @@ Subscribe to see which companies asked this question.
 
 
 
-
-
-
-void reverse(char* s, int i, int j )
-{
-	char temp;
-	while(i < j)
-	{
-		temp = s[i];
-		s[i++] = s[j];
-		s[j--] = temp;
-	}
-}
-
-
-void reverseWords(char *s) {
-    int i , j , count;
-	char* P, *Q;
-	char *Head;
-    if (s == NULL) return;
-	P=s;
-	j=i=count=0;
-
-	while (P[i] != '\0')
-	{
-		while (P[i]==' ')
-		{
-			i ++;
-		}
-
-		j=i;
-
-		while (P[j] !=' ' && P[j] !='\0' )
-		{
-			j++;
-		}
-		
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        if(!divisor) return dividend>=0 ? INT_MAX : INT_MIN;
+        if(dividend==INT_MIN && divisor==-1) return INT_MAX; //overflow problem
         
-		reverse(s, i, j-1);
-
-		if(count < i)
-		{
-           while(i < j)	P[count++]=P[i++];
-
-		}
-		
-		count += j-i;
-
-		i = j;
-
-		while (P[i]==' ')
-		{
-			i ++;
-		}
-		if ( P[i] == '\0')
-		{
-			P[count]='\0';
-		}
-		else
-		{
-			P[count++] = ' ';
-		}
-
-
-	}
-
-	reverse(s, 0, count-1);
-}
+        bool isNeg = false;
+        if((dividend<0 && divisor>0) || (dividend>0 && divisor<0)) isNeg = true;
+        unsigned long long dvd = abs((long long)dividend);
+        unsigned long long dvs = abs((long long)divisor);
+        unsigned long long dvs_original = dvs;
+        
+        int i = 0;
+        while(dvs<<(i+1) <= dvd) i++;
+        
+        int res = 0;
+        while(dvd>=dvs_original) {
+            if(dvd >= dvs<<i) {
+                dvd -= dvs<<i;
+                res += 1<<i;
+            }
+            i--;
+        }
+        
+        return isNeg ? 0-res : res;
+    }
+};
